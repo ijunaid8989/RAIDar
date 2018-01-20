@@ -16,6 +16,13 @@ defmodule ServerStatus.Evercam do
     |> Repo.insert()
   end
 
+  def authenticate(user, password) do
+    case user do
+      nil -> false
+      _   -> Comeonin.Bcrypt.checkpw(password, user.password)
+    end
+  end
+
   def update_user(%User{} = user, attrs) do
     user
     |> User.changeset(attrs)
