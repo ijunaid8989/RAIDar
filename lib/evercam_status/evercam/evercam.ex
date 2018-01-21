@@ -10,16 +10,28 @@ defmodule ServerStatus.Evercam do
 
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_user_email!(email) do
+    User
+    |> where(email: ^email)
+    |> Repo.one
+  end
+
   def create_user(attrs \\ %{}) do
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
   end
 
-  def authenticate(user, password) do
-    case user do
+  def current_user(conn) do
+    id = Plug.Conn.get_session(conn, :current_user)
+    if id, do: Repo.get(User, id)
+  end
+
+  def authenticate(%{"email" => email, "password" => password}) do
+    get_user_email!(email)
+    |> case do
       nil -> false
-      _   -> Comeonin.Bcrypt.checkpw(password, user.password)
+      %User{} = user -> {Comeonin.Bcrypt.checkpw(password, user.password), user}
     end
   end
 

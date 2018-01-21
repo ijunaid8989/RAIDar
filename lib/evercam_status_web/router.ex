@@ -16,7 +16,10 @@ defmodule ServerStatusWeb.Router do
   scope "/", ServerStatusWeb do
     pipe_through :browser # Use the default browser stack
 
-    get "/", UserController, :index
+    # get "/", UserController, :index
+    # post "/", UserController, :create
+
+    get "/", ConsoleController, :index
   end
 
   # Other scopes may use custom stacks.
