@@ -21,10 +21,13 @@ defmodule ServerStatusWeb.Router do
     delete "/", UserController, :delete
 
     get "/console", ConsoleController, :index
+    get "/raid", ConsoleController, :raid
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", ServerStatusWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", ServerStatusWeb do
+    pipe_through :api
+
+    post "/detect_raid", API.RaidController, :detect_raid
+  end
 end

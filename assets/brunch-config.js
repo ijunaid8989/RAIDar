@@ -3,21 +3,11 @@ exports.config = {
   files: {
     javascripts: {
       joinTo: "js/app.js"
-
-      // To use a separate vendor.js bundle, specify two files path
-      // http://brunch.io/docs/config#-files-
-      // joinTo: {
-      //   "js/app.js": /^js/,
-      //   "js/vendor.js": /^(?!js)/
-      // }
-      //
-      // To change the order of concatenation of files, explicitly mention here
-      // }
     },
     stylesheets: {
       joinTo: "css/app.css",
       order: {
-        after: ["priv/static/css/app.scss"] // concat app.css last
+        after: ["css/app.sass"] // concat app.css last
       }
     },
     templates: {
@@ -35,7 +25,7 @@ exports.config = {
   // Phoenix paths configuration
   paths: {
     // Dependencies and current project directories to watch
-    watched: ["static", "css", "js", "vendor"],
+    watched: ["static", "css", "js", "vendor", "scss", "fonts"],
     // Where to compile files to
     public: "../priv/static"
   },
@@ -46,30 +36,32 @@ exports.config = {
       // Do not use ES6 compiler in vendor code
       ignore: [/vendor/]
     },
-    copycat: {
-      "fonts": ["node_modules/font-awesome/fonts"] // copy node_modules/font-awesome/fonts/* to priv/static/fonts/
-    },
     sass: {
+      mode: 'native',
       options: {
-        includePaths: ["node_modules/bootstrap/scss", "node_modules/font-awesome/scss"], // tell sass-brunch where to look for files to @import
-        precision: 8 // minimum precision required by bootstrap
+        includePaths: ["node_modules/bootstrap/scss", "node_modules/font-awesome/scss"], // Tell sass-brunch where to look for files to @import
+        precision: 8 // Minimum precision required by bootstrap-sass
       }
+    },
+    copycat: {
+      "fonts" : ["static/fonts", "node_modules/font-awesome/fonts"],
+      verbose : false, //shows each file that is copied to the destination directory
+      onlyChanged: true //only copy a file if it's modified time has changed (only effective when using brunch watch)
     }
   },
-
   modules: {
     autoRequire: {
       "js/app.js": ["js/app"]
     }
   },
-
   npm: {
     enabled: true,
-    globals: {
+    globals: { // Bootstrap's JavaScript requires both '$' and 'jQuery' in global scope
       $: 'jquery',
       jQuery: 'jquery',
       Tether: 'tether',
-      bootstrap: 'bootstrap' // require Bootstrap JavaScript globally too
+      Popper: 'popper.js',
+      bootstrap: 'bootstrap', // Require Bootstrap's JavaScript globally
     }
   }
 };

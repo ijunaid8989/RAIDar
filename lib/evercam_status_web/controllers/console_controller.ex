@@ -4,4 +4,8 @@ defmodule ServerStatusWeb.ConsoleController do
   def index(conn, _params) do
     render conn, "console.html"
   end
+
+  def raid(conn, _params) do
+    render conn, "console.html"
+  end
 end
