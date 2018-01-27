@@ -1,12 +1,6 @@
-$import-google-fonts: true;
-$icons-font-path: '/semantic-ui';
-$flags-image-path: '/semantic-ui';
-// Fix: https://github.com/aniftyco/semantic-ui-sass/issues/3
-i.flag:not(.icon)::before {
-  background: url("#{$flags-image-path}/flags.png") no-repeat -108px -1976px;
-}
-@import 'scss/globals/all';
-@import 'scss/elements/all';
-@import 'scss/collections/all';
-@import 'scss/views/all';
-@import 'scss/modules/all'
+$fa-font-path: "../fonts";
+@import "font-awesome";
+
+@import "bootstrap";
+
+@import "custom";
