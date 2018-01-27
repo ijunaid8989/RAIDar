@@ -14,7 +14,11 @@ defmodule ServerStatusWeb.UserController do
         |> redirect(to: "/console")
       false ->
         conn
-        |> put_flash(:error, "Wrong email or password.")
+        |> put_flash(:error_email, "No account related to this email.")
+        |> redirect(to: "/")
+      {false, _user} ->
+        conn
+        |> put_flash(:error_password, "Password is so wrong.")
         |> redirect(to: "/")
     end
   end
