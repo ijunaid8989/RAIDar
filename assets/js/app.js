@@ -17,8 +17,16 @@ import "phoenix_html"
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
+// defining DT globally
+
+window.$ = require('jquery');
+var dt = require('datatables.net');
+window.$.DataTable = dt;
+
 // import socket from "./socket"
 
-import { Greet } from "./index.js"
+import { Greet, RaidDatatables } from "./index.js"
 
 Greet.greet()
+
+RaidDatatables.init()
