@@ -8,6 +8,7 @@ defmodule ServerStatus.Repo.Migrations.CreateRaids do
       add :username, :string
       add :password, :string
       add :raid_type, :string
+      add :raid_man, :string
 
       timestamps()
     end
