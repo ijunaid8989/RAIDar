@@ -22,7 +22,7 @@
 </table>
 
 <!-- Modal -->
-<div class="modal fade" id="add-raid" tabindex="-1" role="dialog" aria-labelledby="raidModal" aria-hidden="true">
+<div class="modal fade body-raid-dis" id="add-raid" tabindex="-1" role="dialog" aria-labelledby="raidModal" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -31,7 +31,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body body-raid-dis">
+      <div class="modal-body">
         <ul id="errorRAID" class="raidDetails"></ul>
         <div class="form-group">
           <label>Name</label>
@@ -53,7 +53,7 @@
         </div>
       </div>
       <div class="form-group show-button-raid hide_me">
-        <button type="button" class="btn btn-primary btn-lg btn-block">Block level button</button>
+        <button data-toggle="tooltip" data-placement="top" title="Get your RAID Details first" type="button" class="btn btn-info btn-lg btn-block churas-button">RAID Mystery</button>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -36,9 +36,11 @@ RaidDatatables =
     })
   showDetectButton: ->
     $("#server-password").on "keyup", ->      
-      if $("#server-password").val() != ""
+      if $("#server-password").val() != "" && $("#server-username").val() && $("#server-ip").val()
         console.log "hello"
         $(".show-button-raid").removeClass("hide_me")
+      else
+        $(".show-button-raid").addClass("hide_me")
   hideModal: ->
     $('#add-raid').on 'hidden.bs.modal', (e) ->
       $(".raidDetails")
@@ -84,7 +86,7 @@ sendAJAXRequest = (settings) ->
   xhrRequestChangeMonth = jQuery.ajax(settings)
 
 onError = (jqXHR, status, error) ->
-  $(".body-raid-dis *").prop('disabled', false)
+  # $(".body-raid-dis *").prop('disabled', true)
   cList = $('ul#errorRAID')
   $.each jqXHR.responseJSON.errors, (index, value) ->
     li = $('<li/>').text(value).appendTo(cList)
