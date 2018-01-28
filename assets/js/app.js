@@ -34,5 +34,6 @@ RaidDatatables.appendButton()
 RaidDatatables.createRServer()
 RaidDatatables.showDetectButton()
 RaidDatatables.hideModal()
+RaidDatatables.getRAIDDetails()
 
 // all modules for raid page

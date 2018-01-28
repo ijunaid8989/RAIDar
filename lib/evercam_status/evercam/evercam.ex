@@ -5,16 +5,6 @@ defmodule ServerStatus.Evercam do
   alias ServerStatus.Evercam.Raid
   require Logger
 
-  @check_raid_type "cat /proc/mdstat"
-
-  def detect_raid_on_server(server) do
-    Logger.info "Detecting RAID on server."
-    connect_to_server(server)
-  end
-
-  defp connect_to_server(server), do:
-    SSHEx.connect(ip: server.ip, user: server.username, password: server.password)
-
   def parse_changeset(changeset) do
     Ecto.Changeset.traverse_errors(changeset, fn
       {msg, opts} -> String.replace(msg, "%{count}", to_string(opts[:count]))

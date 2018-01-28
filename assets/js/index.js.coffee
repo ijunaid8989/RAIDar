@@ -53,9 +53,10 @@ RaidDatatables =
     $(".save-raid-s").on "click", ->
       console.log "hello"
       data = {}
-      data.ip = $("server-ip").val()
-      data.username = $("server-username").val()
-      data.password = $("server-password").val()
+      data.ip = $("#server-ip").val()
+      data.username = $("#server-username").val()
+      data.password = $("#server-password").val()
+      data.name = $("#server-name").val()
 
       settings = {
         cache: false,
@@ -75,7 +76,29 @@ RaidDatatables =
         <i class="fa fa-plus"></i> Add Server
     </div>'
     $(".dataTables_length").append(button)
+  getRAIDDetails: ->
+    $(".churas-button").on "click", ->
+      data = {}
+      data.ip = $("#server-ip").val()
+      data.username = $("#server-username").val()
+      data.password = $("#server-password").val()
 
+      settings = {
+        cache: false,
+        data: data,
+        dataType: 'json',
+        error: (jqXHR, status, error) ->
+          console.log jqXHR.responseJSON.message
+          console.log "error hai"
+        success: (data) ->
+          console.log "jhhh"
+        contentType: "application/x-www-form-urlencoded",
+        type: "POST",
+        url: "/api/details_about_raid"
+      };
+
+      sendAJAXRequest(settings);
+      console.log "Hello"
 
 sendAJAXRequest = (settings) ->
   headers = undefined
