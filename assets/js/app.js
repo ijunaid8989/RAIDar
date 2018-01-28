@@ -25,6 +25,13 @@ window.$.DataTable = dt;
 
 // import socket from "./socket"
 
+// all modues for raid page
+
 import { RaidDatatables } from "./index.js"
 
 RaidDatatables.init()
+RaidDatatables.appendButton()
+RaidDatatables.createRServer()
+RaidDatatables.hideModal()
+
+// all modules for raid page
