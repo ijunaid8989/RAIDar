@@ -1,6 +1,7 @@
+globalDT = undefined
 RaidDatatables =
   init: ->
-    $('#raid_table').DataTable({
+    globalDT = $('#raid_table').DataTable({
       ajax: {
         url: "/api/load_raid_servers",
         dataSrc: (data) ->
@@ -43,6 +44,7 @@ RaidDatatables =
         $(".show-button-raid").addClass("hide_me")
   hideModal: ->
     $('#add-raid').on 'hidden.bs.modal', (e) ->
+      $(".show-button-raid").addClass("hide_me")
       $(".raidDetails")
         .addClass("hide_me")
         .text("")
@@ -94,6 +96,7 @@ onError = (jqXHR, status, error) ->
   $(".raidDetails").removeClass("hide_me")
 
 onSuccess = (data) ->
+  globalDT.ajax.reload()
   console.log data
 
 module.exports =
