@@ -12,6 +12,7 @@ defmodule ServerStatus.Evercam.Raid do
     field :raid_type, :string
     field :username, :string
     field :raid_man, :string
+    field :extra, :map
 
     timestamps()
   end
@@ -19,7 +20,7 @@ defmodule ServerStatus.Evercam.Raid do
   @doc false
   def changeset(%Raid{} = raid, attrs) do
     raid
-    |> cast(attrs, [:name, :ip, :username, :password, :raid_type, :raid_man])
+    |> cast(attrs, [:name, :ip, :username, :password, :raid_type, :raid_man, :map])
     |> validate_required(:name, [message: "Name cannot be empty."])
     |> validate_required(:ip, [message: "IP / URL cannot be empty."])
     |> validate_required(:username, [message: "Username cannot be empty."])
