@@ -48,4 +48,32 @@ defmodule ServerStatus.Evercam do
   def change_user(%User{} = user) do
     User.changeset(user, %{})
   end
+
+  alias ServerStatus.Evercam.Raid
+
+  def list_raids do
+    Repo.all(Raid)
+  end
+
+  def get_raid!(id), do: Repo.get!(Raid, id)
+
+  def create_raid(attrs \\ %{}) do
+    %Raid{}
+    |> Raid.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_raid(%Raid{} = raid, attrs) do
+    raid
+    |> Raid.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_raid(%Raid{} = raid) do
+    Repo.delete(raid)
+  end
+
+  def change_raid(%Raid{} = raid) do
+    Raid.changeset(raid, %{})
+  end
 end

@@ -25,8 +25,6 @@ window.$.DataTable = dt;
 
 // import socket from "./socket"
 
-import { Greet, RaidDatatables } from "./index.js"
-
-Greet.greet()
+import { RaidDatatables } from "./index.js"
 
 RaidDatatables.init()
