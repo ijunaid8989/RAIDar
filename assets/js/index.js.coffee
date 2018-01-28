@@ -1,36 +1,4 @@
 RaidDatatables =
-  hideModal: ->
-    $('#add-raid').on 'hidden.bs.modal', (e) ->
-      $(".raidDetails")
-        .addClass("hide_me")
-        .text("")
-      return
-  createRServer: ->
-    $(".save-raid-s").on "click", ->
-      console.log "hello"
-      data = {}
-      data.ip = $("server-ip").val()
-      data.username = $("server-username").val()
-      data.password = $("server-password").val()
-
-      settings = {
-        cache: false,
-        data: data,
-        dataType: 'json',
-        error: onError,
-        success: onSuccess,
-        contentType: "application/x-www-form-urlencoded",
-        type: "POST",
-        url: "/api/create_raid"
-      };
-
-      sendAJAXRequest(settings);
-  appendButton: ->
-    $(".dataTables_length > label").hide()
-    button = '<div href="#" class="btn btn-primary btn-cursor" data-toggle="modal" data-target="#add-raid">
-        <i class="fa fa-plus"></i> Add Server
-    </div>'
-    $(".dataTables_length").append(button)
   init: ->
     $('#raid_table').DataTable({
       ajax: {
@@ -66,6 +34,44 @@ RaidDatatables =
       },
       order: [[ 1, "desc" ]],
     })
+  showDetectButton: ->
+    $("#server-password").on "keyup", ->      
+      if $("#server-password").val() != ""
+        console.log "hello"
+        $(".show-button-raid").removeClass("hide_me")
+  hideModal: ->
+    $('#add-raid').on 'hidden.bs.modal', (e) ->
+      $(".raidDetails")
+        .addClass("hide_me")
+        .text("")
+      return
+  createRServer: ->
+    $(".save-raid-s").on "click", ->
+      console.log "hello"
+      data = {}
+      data.ip = $("server-ip").val()
+      data.username = $("server-username").val()
+      data.password = $("server-password").val()
+
+      settings = {
+        cache: false,
+        data: data,
+        dataType: 'json',
+        error: onError,
+        success: onSuccess,
+        contentType: "application/x-www-form-urlencoded",
+        type: "POST",
+        url: "/api/create_raid"
+      };
+
+      sendAJAXRequest(settings);
+  appendButton: ->
+    $(".dataTables_length > label").hide()
+    button = '<div href="#" class="btn btn-primary btn-cursor" data-toggle="modal" data-target="#add-raid">
+        <i class="fa fa-plus"></i> Add Server
+    </div>'
+    $(".dataTables_length").append(button)
+
 
 sendAJAXRequest = (settings) ->
   headers = undefined

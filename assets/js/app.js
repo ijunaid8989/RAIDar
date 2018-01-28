@@ -32,6 +32,7 @@ import { RaidDatatables } from "./index.js"
 RaidDatatables.init()
 RaidDatatables.appendButton()
 RaidDatatables.createRServer()
+RaidDatatables.showDetectButton()
 RaidDatatables.hideModal()
 
 // all modules for raid page

@@ -1,8 +1,26 @@
 defmodule ServerStatus.Evercam do
   import Ecto.Query, warn: false
   alias ServerStatus.Repo
-
   alias ServerStatus.Evercam.User
+  alias ServerStatus.Evercam.Raid
+  require Logger
+
+  @check_raid_type "cat /proc/mdstat"
+
+  def detect_raid_on_server(server) do
+    Logger.info "Detecting RAID on server."
+    connect_to_server(server)
+  end
+
+  defp connect_to_server(server), do:
+    SSHEx.connect(ip: server.ip, user: server.username, password: server.password)
+
+  def parse_changeset(changeset) do
+    Ecto.Changeset.traverse_errors(changeset, fn
+      {msg, opts} -> String.replace(msg, "%{count}", to_string(opts[:count]))
+      msg -> msg
+    end)
+  end
 
   def list_users do
     Repo.all(User)
@@ -48,8 +66,6 @@ defmodule ServerStatus.Evercam do
   def change_user(%User{} = user) do
     User.changeset(user, %{})
   end
-
-  alias ServerStatus.Evercam.Raid
 
   def list_raids do
     Repo.all(Raid)
