@@ -44,6 +44,10 @@ RaidDatatables =
         $(".show-button-raid").addClass("hide_me")
   hideModal: ->
     $('#add-raid').on 'hidden.bs.modal', (e) ->
+      $("#server-ip").val() = ""
+      $("#server-username").val() = ""
+      $("#server-password").val() = ""
+      $("#server-name").val() = ""
       $(".show-button-raid").addClass("hide_me")
       $(".raidDetails")
         .addClass("hide_me")
