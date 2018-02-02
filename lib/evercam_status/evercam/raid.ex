@@ -20,7 +20,7 @@ defmodule ServerStatus.Evercam.Raid do
   @doc false
   def changeset(%Raid{} = raid, attrs) do
     raid
-    |> cast(attrs, [:name, :ip, :username, :password, :raid_type, :raid_man, :map])
+    |> cast(attrs, [:name, :ip, :username, :password, :raid_type, :raid_man, :extra])
     |> validate_required(:name, [message: "Name cannot be empty."])
     |> validate_required(:ip, [message: "IP / URL cannot be empty."])
     |> validate_required(:username, [message: "Username cannot be empty."])
