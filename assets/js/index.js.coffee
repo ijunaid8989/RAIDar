@@ -93,16 +93,14 @@ RaidDatatables =
         dataType: 'json',
         error: (jqXHR, status, error) ->
           console.log jqXHR.responseJSON.message
-          console.log "error hai"
         success: (data) ->
-          console.log "jhhh"
+          console.log data
         contentType: "application/x-www-form-urlencoded",
         type: "POST",
         url: "/api/details_about_raid"
       };
 
       sendAJAXRequest(settings);
-      console.log "Hello"
 
 sendAJAXRequest = (settings) ->
   headers = undefined
