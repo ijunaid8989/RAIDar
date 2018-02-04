@@ -5,6 +5,7 @@ RaidDatatables =
       ajax: {
         url: "/api/load_raid_servers",
         dataSrc: (data) ->
+          console.log data
           return data
         error: (xhr, error, thrown) ->
           console.log xhr.responseJSON
@@ -20,7 +21,13 @@ RaidDatatables =
           return row.username
         , className: 'text-center'},
         {data: ( row, type, set, meta ) ->
+          return row.raid.raid
+        , className: 'text-center'},
+        {data: ( row, type, set, meta ) ->
           return row.raid_type
+        , className: 'text-center'},
+        {data: ( row, type, set, meta ) ->
+          return row.raid_man
         , className: 'text-center'},
         {data: ( row, type, set, meta ) ->
           return row.password
@@ -52,6 +59,8 @@ RaidDatatables =
       $(".raidDetails")
         .addClass("hide_me")
         .text("")
+      $(".raid-danzel").addClass("hide_me")
+      $(".raid-hard").addClass("hide_me")
       return
   createRServer: ->
     $(".save-raid-s").on "click", ->
@@ -61,6 +70,10 @@ RaidDatatables =
       data.username = $("#server-username").val()
       data.password = $("#server-password").val()
       data.name = $("#server-name").val()
+      data.raid_type = $("#server_raid_type").val()
+      data.raid_man = $("#server_raid_man").val()
+      data.extra = {}
+      data.extra.raid = $("#server_raid_full").val()
 
       settings = {
         cache: false,
@@ -82,6 +95,10 @@ RaidDatatables =
     $(".dataTables_length").append(button)
   getRAIDDetails: ->
     $(".churas-button").on "click", ->
+      $(".am-progress").css 'display', 'block'
+      $(".raid-hard").addClass("hide_me")
+      $(".raid-danzel").addClass("hide_me")
+      startBar()
       data = {}
       data.ip = $("#server-ip").val()
       data.username = $("#server-username").val()
@@ -93,8 +110,22 @@ RaidDatatables =
         dataType: 'json',
         error: (jqXHR, status, error) ->
           console.log jqXHR.responseJSON.message
+          $(".am-progress").css 'display', 'none'
+          $(".raid-hard").addClass("hide_me")
+          $(".raid-danzel").removeClass("hide_me")
+          $(".part-block-raid").html(
+            jqXHR.responseJSON.message
+            )
         success: (data) ->
-          console.log data
+          $(".am-progress").css 'display', 'none'
+          $(".raid-danzel").addClass("hide_me")
+          $(".raid-hard").removeClass("hide_me")
+          $(".raid-hardest").html(
+            "Raid: Hardware </br> Controller: #{data.message}"
+            )
+          $("#server_raid_man").val(data.man)
+          $("#server_raid_full").val(data.message)
+          $(".save-raid-s").prop("disabled", false)
         contentType: "application/x-www-form-urlencoded",
         type: "POST",
         url: "/api/details_about_raid"
@@ -123,6 +154,29 @@ onError = (jqXHR, status, error) ->
 onSuccess = (data) ->
   globalDT.ajax.reload()
   console.log data
+
+startBar = ->
+  $progress = $('.am-progress')
+  $progressBar = $('.progress-bar')
+  setTimeout (->
+    $progressBar.css 'width', '10%'
+    setTimeout (->
+      $progressBar.css 'width', '30%'
+      setTimeout (->
+        $progressBar.css 'width', '100%'
+        setTimeout (->
+          $progress.css 'display', 'none'
+          return
+        ), 500
+        # WAIT 5 milliseconds
+        return
+      ), 2000
+      # WAIT 2 seconds
+      return
+    ), 1000
+    # WAIT 1 seconds
+    return
+  ), 1000
 
 module.exports =
   RaidDatatables: RaidDatatables

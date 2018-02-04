@@ -30,7 +30,15 @@ defmodule ServerStatusWeb.API.RaidController do
   defp respond_with_ctrl("02:00.0 RAID bus controller: " <> controller, conn) do
     conn
     |> put_status(201)
-    |> json(%{message: controller, hardware: true})
+    |> json(%{message: controller, hardware: true, man: get_man_raid(controller)})
+  end
+
+  defp get_man_raid(controller) do
+    cond do
+      controller =~ "MegaRAID"  == true -> "megaRaid"
+      controller =~ "Adaptec"   == true -> "Adaptec"
+      true -> "Unknown"
+    end
   end
 
   defp respond_with_type(res) do
@@ -68,7 +76,9 @@ defmodule ServerStatusWeb.API.RaidController do
           name: name,
           ip: ip,
           username: username,
-          password: password
+          password: password,
+          raid_type: raid_type,
+          raid_man: raid_man
         } = server
 
         conn
@@ -78,6 +88,8 @@ defmodule ServerStatusWeb.API.RaidController do
           "username" => username,
           "password" => password,
           "ip" => ip,
+          "raid_type" => raid_type,
+          "raid_man" => raid_man
         })
 
       {:error, changeset} ->
@@ -99,6 +111,8 @@ defmodule ServerStatusWeb.API.RaidController do
           ip: server.ip,
           username: server.username,
           raid_type: server.raid_type,
+          raid_man: server.raid_man,
+          raid: server.extra,
           password: server.password
         }
       end)
