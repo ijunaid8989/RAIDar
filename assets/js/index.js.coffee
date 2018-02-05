@@ -11,6 +11,11 @@ RaidDatatables =
           console.log xhr.responseJSON
       },
       columns: [
+        {
+          orderable: false,
+          data: null,
+          defaultContent: '',
+        },
         {data: ( row, type, set, meta ) ->
           return row.name
         , className: 'text-center'},
@@ -21,19 +26,10 @@ RaidDatatables =
           return row.username
         , className: 'text-center'},
         {data: ( row, type, set, meta ) ->
-          return row.raid.raid
-        , className: 'text-center'},
-        {data: ( row, type, set, meta ) ->
-          return row.raid_type
-        , className: 'text-center'},
-        {data: ( row, type, set, meta ) ->
-          return row.raid_man
-        , className: 'text-center'},
-        {data: ( row, type, set, meta ) ->
           return row.password
         , className: 'text-center'}
       ],
-      autoWidth: false,
+      autoWidth: true,
       info: false,
       bPaginate: true,
       pageLength: 50
@@ -41,7 +37,28 @@ RaidDatatables =
         "emptyTable": "No data available"
       },
       order: [[ 1, "desc" ]],
+      drawCallback: ->
+        api = @api()
+        $.each api.rows(page: 'current').data(), (i, data) ->
+          console.log i
+          console.log data
+          $("table#raid_table > tbody > tr:eq(#{i}) td:eq(0)")
+            .addClass("details-control")
+            .html("<i class='fa fa-plus text-center expand-icon' aria-hidden='true'></i>")
     })
+  showDetails: ->
+    $('#raid_table tbody').on 'click', 'td.details-control', ->
+      tr = $(this).closest('tr')
+      row = globalDT.row(tr)
+      if row.child.isShown()
+        row.child.hide()
+        tr.removeClass 'shown'
+        tr.find('td.details-control').html("<i class='fa fa-plus expand-icon' aria-hidden='true'></i>")
+      else
+        row.child(format(row.data())).show()
+        tr.addClass 'shown'
+        tr.find('td.details-control').html("<i class='fa fa-minus expand-icon' aria-hidden='true'></i>")
+      return
   showDetectButton: ->
     $("#server-password").on "keyup", ->      
       if $("#server-password").val() != "" && $("#server-username").val() && $("#server-ip").val()
@@ -155,26 +172,68 @@ onSuccess = (data) ->
   globalDT.ajax.reload()
   console.log data
 
+format = (data) ->
+  if data
+    return "
+      <table class='table table-striped'>
+        <tbody style='margin-left: 24px;'>
+          <tr>
+            <th style='background-color: #f1f1f1; font-size: 12px;'>Raid Mystery</th>
+          </tr>
+          <tr>
+            <td>Raid Type</td>
+            <td>Hardware</td>
+          </tr>
+          <tr>
+            <td>Raid Info</td>
+            <td>#{data.extra.raid}</td>
+          </tr>
+          <tr>
+            <td>Raid Controller</td>
+            <td>#{data.raid_man}</td>
+          </tr>
+        </tbody>
+      </table>
+    "
+  else
+    ""
+
 startBar = ->
   $progress = $('.am-progress')
   $progressBar = $('.progress-bar')
   setTimeout (->
     $progressBar.css 'width', '10%'
     setTimeout (->
-      $progressBar.css 'width', '30%'
+      $progressBar.css 'width', '20%'
       setTimeout (->
-        $progressBar.css 'width', '100%'
+        $progressBar.css 'width', '30%'
         setTimeout (->
-          $progress.css 'display', 'none'
+          $progressBar.css 'width', '40%'
+          setTimeout (->
+            $progressBar.css 'width', '50%'
+            setTimeout (->
+              $progressBar.css 'width', '60%'
+              setTimeout (->
+                $progressBar.css 'width', '70%'
+                setTimeout (->
+                  $progressBar.css 'width', '80%'
+                  setTimeout (->
+                    $progress.css 'display', 'none'
+                  ), 500
+                  return
+                ), 500
+                return
+              ), 500
+              return
+            ), 500
+            return
+          ), 500
           return
         ), 500
-        # WAIT 5 milliseconds
         return
       ), 2000
-      # WAIT 2 seconds
       return
     ), 1000
-    # WAIT 1 seconds
     return
   ), 1000
 

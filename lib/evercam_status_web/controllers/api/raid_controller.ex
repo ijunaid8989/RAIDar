@@ -112,7 +112,7 @@ defmodule ServerStatusWeb.API.RaidController do
           username: server.username,
           raid_type: server.raid_type,
           raid_man: server.raid_man,
-          raid: server.extra,
+          extra: server.extra,
           password: server.password
         }
       end)
