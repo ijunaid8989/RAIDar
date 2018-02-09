@@ -2,7 +2,7 @@ defmodule ServerStatus.Repo.Migrations.CreateRaids do
   use Ecto.Migration
 
   def change do
-    create table(:raids) do
+    create table(:servers) do
       add :name, :string
       add :ip, :string
       add :username, :string

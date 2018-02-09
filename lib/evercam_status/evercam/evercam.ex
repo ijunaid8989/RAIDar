@@ -2,7 +2,7 @@ defmodule ServerStatus.Evercam do
   import Ecto.Query, warn: false
   alias ServerStatus.Repo
   alias ServerStatus.Evercam.User
-  alias ServerStatus.Evercam.Raid
+  alias ServerStatus.Evercam.Server
   require Logger
 
   def parse_changeset(changeset) do
@@ -57,29 +57,29 @@ defmodule ServerStatus.Evercam do
     User.changeset(user, %{})
   end
 
-  def list_raids do
-    Repo.all(Raid)
+  def list_servers do
+    Repo.all(Server)
   end
 
-  def get_raid!(id), do: Repo.get!(Raid, id)
+  def get_server!(id), do: Repo.get!(Server, id)
 
-  def create_raid(attrs \\ %{}) do
-    %Raid{}
-    |> Raid.changeset(attrs)
+  def create_server(attrs \\ %{}) do
+    %Server{}
+    |> Server.changeset(attrs)
     |> Repo.insert()
   end
 
-  def update_raid(%Raid{} = raid, attrs) do
-    raid
-    |> Raid.changeset(attrs)
+  def update_server(%Server{} = server, attrs) do
+    server
+    |> Server.changeset(attrs)
     |> Repo.update()
   end
 
-  def delete_raid(%Raid{} = raid) do
-    Repo.delete(raid)
+  def delete_server(%Server{} = server) do
+    Repo.delete(server)
   end
 
-  def change_raid(%Raid{} = raid) do
-    Raid.changeset(raid, %{})
+  def change_server(%Server{} = server) do
+    Server.changeset(server, %{})
   end
 end

@@ -1,4 +1,4 @@
-defmodule ServerStatusWeb.API.RaidController do
+defmodule ServerStatusWeb.API.ServerController do
   use ServerStatusWeb, :controller
   require Logger
   require IEx
@@ -24,13 +24,18 @@ defmodule ServerStatusWeb.API.RaidController do
   defp continue_if_hard("hard", conn, connected) do
     connected
     |> run_command_on_server(@check_raid_ctrl)
-    |> respond_with_ctrl(conn)
+    |> respond_with_ctrl(conn, connected)
   end
 
-  defp respond_with_ctrl("02:00.0 RAID bus controller: " <> controller, conn) do
+  defp respond_with_ctrl("02:00.0 RAID bus controller: " <> controller, conn, connected) do
+    {:ok, conn_key} = put_connection_in_ets(connected)
     conn
     |> put_status(201)
-    |> json(%{message: controller, hardware: true, man: get_man_raid(controller)})
+    |> json(%{
+      message: controller,
+      hardware: true,
+      man: get_man_raid(controller),
+      conn_key: conn_key})
   end
 
   defp get_man_raid(controller) do
@@ -39,6 +44,12 @@ defmodule ServerStatusWeb.API.RaidController do
       controller =~ "Adaptec"   == true -> "Adaptec"
       true -> "Unknown"
     end
+  end
+
+  defp put_connection_in_ets(connection) do
+    conn_key = :crypto.strong_rand_bytes(16) |> Base.encode16()
+    :ets.insert(:connection, {conn_key, connection})
+    {:ok, conn_key}
   end
 
   defp respond_with_type(res) do
@@ -65,13 +76,19 @@ defmodule ServerStatusWeb.API.RaidController do
   defp connect_to_server(ip, username, password), do:
     SSHEx.connect(ip: ip, user: username, password: password)
 
-  def create_raid(conn, params) do
+  defp get_conn_key_pid(conn_key) do
+    [{_conn_key, pid}] =
+      :ets.lookup(:connection, conn_key)
+    pid
+  end
+
+  def create_server(conn, params) do
     params
-    |> ServerStatus.Evercam.create_raid()
+    |> ServerStatus.Evercam.create_server()
     |> case do
       {:ok, server} ->
         Logger.info "Added server for Raid"
-        %ServerStatus.Evercam.Raid{
+        %ServerStatus.Evercam.Server{
           id: _id,
           name: name,
           ip: ip,
@@ -101,9 +118,9 @@ defmodule ServerStatusWeb.API.RaidController do
     end
   end
 
-  def load_raid_servers(conn, _params) do
+  def load_servers(conn, _params) do
     raid_servers = 
-      ServerStatus.Evercam.list_raids()
+      ServerStatus.Evercam.list_servers()
       |> Enum.map(fn(server) ->
         %{
           id: server.id,

@@ -28,8 +28,8 @@ defmodule ServerStatusWeb.Router do
   scope "/api", ServerStatusWeb do
     pipe_through :api
 
-    post "/create_raid", API.RaidController, :create_raid
-    post "/details_about_raid", API.RaidController, :details_about_raid
-    get "/load_raid_servers", API.RaidController, :load_raid_servers
+    post "/create_server", API.ServerController, :create_server
+    post "/details_about_raid", API.ServerController, :details_about_raid
+    get "/load_servers", API.ServerController, :load_servers
   end
 end

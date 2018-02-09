@@ -1,11 +1,11 @@
-defmodule ServerStatus.Evercam.Raid do
+defmodule ServerStatus.Evercam.Server do
   use Ecto.Schema
   import Ecto.Changeset
-  alias ServerStatus.Evercam.Raid
+  alias ServerStatus.Evercam.Server
 
   @ip_regex ~r/^(http(s?):\/\/)?(((www\.)?+[a-zA-Z0-9\.\-\_]+(\.[a-zA-Z]{2,3})+)|(\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b))(\/[a-zA-Z0-9\_\-\s\.\/\?\%\#\&\=]*)?$/
 
-  schema "raids" do
+  schema "servers" do
     field :ip, :string
     field :name, :string
     field :password, :string
@@ -18,7 +18,7 @@ defmodule ServerStatus.Evercam.Raid do
   end
 
   @doc false
-  def changeset(%Raid{} = raid, attrs) do
+  def changeset(%Server{} = raid, attrs) do
     raid
     |> cast(attrs, [:name, :ip, :username, :password, :raid_type, :raid_man, :extra])
     |> validate_required(:name, [message: "Name cannot be empty."])

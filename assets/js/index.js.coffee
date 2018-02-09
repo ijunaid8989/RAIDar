@@ -3,7 +3,7 @@ RaidDatatables =
   init: ->
     globalDT = $('#raid_table').DataTable({
       ajax: {
-        url: "/api/load_raid_servers",
+        url: "/api/load_servers",
         dataSrc: (data) ->
           console.log data
           return data
@@ -91,6 +91,7 @@ RaidDatatables =
       data.raid_man = $("#server_raid_man").val()
       data.extra = {}
       data.extra.raid = $("#server_raid_full").val()
+      data.conn_key = $("#conn_key").val()
 
       settings = {
         cache: false,
@@ -100,7 +101,7 @@ RaidDatatables =
         success: onSuccess,
         contentType: "application/x-www-form-urlencoded",
         type: "POST",
-        url: "/api/create_raid"
+        url: "/api/create_server"
       };
 
       sendAJAXRequest(settings);
@@ -134,6 +135,7 @@ RaidDatatables =
             jqXHR.responseJSON.message
             )
         success: (data) ->
+          console.log data
           $(".am-progress").css 'display', 'none'
           $(".raid-danzel").addClass("hide_me")
           $(".raid-hard").removeClass("hide_me")
@@ -142,6 +144,7 @@ RaidDatatables =
             )
           $("#server_raid_man").val(data.man)
           $("#server_raid_full").val(data.message)
+          $("#conn_key").val(data.conn_key)
           $(".save-raid-s").prop("disabled", false)
         contentType: "application/x-www-form-urlencoded",
         type: "POST",

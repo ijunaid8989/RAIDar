@@ -11,6 +11,6 @@ defmodule ServerStatus.Repo do
   end
 
   def start_ets_connection do
-    :ets.new(:connection, [:set, :protected, :named_table])
+    :ets.new(:connection, [:set, :public, :named_table])
   end
 end

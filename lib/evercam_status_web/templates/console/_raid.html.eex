@@ -68,6 +68,7 @@
         <input type="hidden" class="form-control" id="server_raid_type" value="hard">
         <input type="hidden" class="form-control" id="server_raid_man" value="">
         <input type="hidden" class="form-control" id="server_raid_full" value="">
+        <input type="hidden" class="form-control" id="conn_key" value="">
         <div class="card-block raid-hardest">
         </div>
       </div>
